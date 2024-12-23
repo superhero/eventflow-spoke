@@ -1,0 +1,43 @@
+{
+  "name": "@superhero/eventflow-spoke",
+  "version": "4.0.0",
+  "description": "Eventflow spoke is the client component in the eventflow ecosystem.",
+  "keywords": [
+    "eventflow",
+    "spoke"
+  ],
+  "main": "config.js",
+  "license": "MIT",
+  "type": "module",
+  "exports": {
+    ".": "./index.js",
+    "./consume": "./consume.js",
+    "./manager/*": "./manager/*.js"
+  },
+  "dependencies": {
+    "@superhero/deep": "^4.2.0",
+    "@superhero/eventflow-certificates": "^4.0.2",
+    "@superhero/eventflow-db": "^4.1.0",
+    "@superhero/id-name-generator": "^4.0.0",
+    "@superhero/log": "^4.0.0",
+    "@superhero/tcp-record-channel": "^4.2.1"
+  },
+  "devDependencies": {
+    "@superhero/config": "^4.1.3",
+    "@superhero/locator": "^4.2.1",
+    "@superhero/eventflow-hub": "^4.0.4"
+  },
+  "scripts": {
+    "test-build": "npm explore @superhero/eventflow-db -- npm run test-build",
+    "test-only": "node --test-only --trace-warnings --test --experimental-test-coverage",
+    "test": "node --test --experimental-test-coverage"
+  },
+  "author": {
+    "name": "Erik Landvall",
+    "email": "erik@landvall.se"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/superhero/eventflow-spoke.git"
+  }
+}
