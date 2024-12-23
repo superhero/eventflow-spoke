@@ -26,14 +26,15 @@ npm install @superhero/eventflow-spoke
 To initialize a Spoke instance:
 
 ```javascript
-import { locate } from '@superhero/eventflow-spoke'
-
+import Config  from '@superhero/config'
+import Locator from '@superhero/locator'
+const config = new Config()
+await config.add('@superhero/eventflow-db')
+await config.add('@superhero/eventflow-spoke')
 const locator = new Locator()
 locator.set('@superhero/config', config)
-locator.eagerload('@superhero/eventflow-db')
-locator.eagerload(config.find('locator'))
-
-const spoke = locate(locator)
+await locator.eagerload(config.find('locator'))
+const spoke = locator('@superhero/eventflow-spoke')
 await spoke.bootstrap()
 ```
 
