@@ -1,4 +1,4 @@
-# @superhero/eventflow-spoke
+# Eventflow Spoke
 
 Eventflow Spoke is the client component in the Eventflow ecosystem. It enables communication with hubs in the Eventflow network, allowing events to be published, consumed, subscribed to, and managed efficiently.
 
