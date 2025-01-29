@@ -1,6 +1,5 @@
 import assert  from 'node:assert/strict'
 import util    from 'node:util'
-import Config  from '@superhero/config'
 import Locator from '@superhero/locator'
 import { suite, test, before, after } from 'node:test'
 
@@ -14,16 +13,14 @@ suite('@superhero/eventflow-spoke', () =>
   {
     locator = new Locator()
 
-    const config = new Config()
-    await config.add('@superhero/eventflow-db')
-    await config.add('@superhero/eventflow-hub')
-    await config.add('./config.js')
-    config.assign({ eventflow: { spoke: { certificates: { CERT_PASS_ENCRYPTION_KEY: 'encryptionKey123' }}}})
-    config.assign({ eventflow: { hub:   { certificates: { CERT_PASS_ENCRYPTION_KEY: 'encryptionKey123' }}}})
+    await locator.config.add('@superhero/eventflow-db')
+    await locator.config.add('@superhero/eventflow-hub')
+    await locator.config.add('./config.js')
+    locator.config.assign({ eventflow: { spoke: { certificates: { CERT_PASS_ENCRYPTION_KEY: 'encryptionKey123' }}}})
+    locator.config.assign({ eventflow: { hub:   { certificates: { CERT_PASS_ENCRYPTION_KEY: 'encryptionKey123' }}}})
 
-    locator.set('@superhero/config', config)
     await locator.eagerload('@superhero/eventflow-db')
-    await locator.eagerload(config.find('locator'))
+    await locator.eagerload(locator.config.find('locator'))
 
     spoke = locator('@superhero/eventflow-spoke')
     hub   = locator('@superhero/eventflow-hub')

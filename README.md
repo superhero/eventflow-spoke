@@ -26,14 +26,11 @@ npm install @superhero/eventflow-spoke
 To initialize a Spoke instance:
 
 ```javascript
-import Config  from '@superhero/config'
 import Locator from '@superhero/locator'
-const config = new Config()
-await config.add('@superhero/eventflow-db')
-await config.add('@superhero/eventflow-spoke')
 const locator = new Locator()
-locator.set('@superhero/config', config)
-await locator.eagerload(config.find('locator'))
+await locator.config.add('@superhero/eventflow-db')
+await locator.config.add('@superhero/eventflow-spoke')
+await locator.eagerload(locator.config.find('locator'))
 const spoke = locator('@superhero/eventflow-spoke')
 await spoke.bootstrap()
 ```
@@ -211,7 +208,7 @@ file                 | line % | branch % | funcs % | uncovered lines
 -------------------------------------------------------------------------------------------------------------------------
 config.js            | 100.00 |   100.00 |  100.00 | 
 consume.js           |  42.24 |   100.00 |   42.86 | 43-55 58-91 94-103 106-115
-index.js             |  86.26 |    80.43 |   88.89 | 34-36 44-47 100-104 111-112 148-151 179-183 205-210 219-231 287-29…
+index.js             |  86.26 |    80.43 |   88.89 | 35-37 45-48 101-105 112-113 119-122 145-160 180-184 206-211 220-232…
 index.test.js        | 100.00 |   100.00 |  100.00 | 
 manager              |        |          |         | 
  hubs.js             | 100.00 |   100.00 |  100.00 | 
@@ -219,7 +216,7 @@ manager              |        |          |         |
  listeners.js        | 100.00 |   100.00 |   88.89 | 
  listeners.test.js   | 100.00 |   100.00 |  100.00 | 
 -------------------------------------------------------------------------------------------------------------------------
-all files            |  88.17 |    92.44 |   91.00 | 
+all files            |  86.35 |    91.45 |   90.10 | 
 -------------------------------------------------------------------------------------------------------------------------
 ```
 

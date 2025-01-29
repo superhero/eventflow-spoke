@@ -11,8 +11,8 @@ import ListenersManager       from '@superhero/eventflow-spoke/manager/listeners
 export function locate(locator)
 {
   const
-    config = locator('@superhero/config').find('eventflow/spoke'),
-    db     = locator('@superhero/eventflow-db')
+    config = locator.config.find('eventflow/spoke'),
+    db     = locator.locate('@superhero/eventflow-db')
 
   return new Spoke(config, db)
 }
@@ -24,11 +24,12 @@ export default class Spoke
 {
   #spokeID
 
-  abortion      = new AbortController()
-  channel       = new Channel()
-  hubs          = new HubsManager()
-  subscriptions = new ListenersManager()
-  consumers     = new ListenersManager()
+  idNameGenerator = new IdNameGenerator()
+  abortion        = new AbortController()
+  channel         = new Channel()
+  hubs            = new HubsManager()
+  subscriptions   = new ListenersManager()
+  consumers       = new ListenersManager()
 
   get spokeID()
   {
@@ -305,6 +306,11 @@ export default class Spoke
 
       await Promise.allSettled(eventNames.map((name) => this.subscribe(domain, name, subscriber)))
     })
+  }
+
+  generatePid()
+  {
+    return this.idNameGenerator.generateId()
   }
 
   async publish(event)
