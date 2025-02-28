@@ -3,19 +3,19 @@
  */
 export default
 {
-  dependency:
-  {
-    '@superhero/eventflow-db' : '@superhero/eventflow-db'
-  },
   bootstrap:
   {
     '@superhero/eventflow-spoke'         : true,
     '@superhero/eventflow-spoke/consume' : true
   },
+  dependency:
+  {
+    '@superhero/eventflow-db' : true
+  },
   locator:
   {
-    '@superhero/eventflow-spoke'         : './index.js',
-    '@superhero/eventflow-spoke/consume' : './consume.js'
+    '@superhero/eventflow-spoke'         : true,
+    '@superhero/eventflow-spoke/consume' : true
   },
   eventflow:
   {

@@ -319,6 +319,7 @@ export default class Spoke
     await this.db.persistEventPublished({ event_id:eventID, publisher:this.#spokeID })
     this.#broadcast('publish', event.domain, eventID, event.name, event.pid)
     this.log.info`published event ${eventID} › ${event.domain} › ${event.name} › ${event.pid}`
+    return eventID
   }
 
   async schedule(scheduled, event)
@@ -346,6 +347,16 @@ export default class Spoke
     return await this.db.persistEvent(event)
   }
 
+  async persistEntityAssociation(event_id, eid)
+  {
+    return await this.db.persistEventEid(event_id, eid)
+  }
+
+  async persistChildProcessAssociation(event_id, domain, cpid)
+  {
+    return await this.db.persistEventCpid(event_id, domain, cpid)
+  }
+
   async delete(eventID)
   {
     return await this.db.deleteEvent(eventID)
@@ -364,6 +375,26 @@ export default class Spoke
   async readEventlog(domain, pid)
   {
     return await this.db.readEventsByDomainAndPid(domain, pid)
+  }
+
+  async readEventlogFilteredByNames(domain, pid, names)
+  {
+    return await this.db.readEventsByDomainAndPidAndNames(domain, pid, names)
+  }
+
+  async readEventlogByChildProcess(domain, cpid)
+  {
+    return await this.db.readEventsByDomainAndCpid(domain, cpid)
+  }
+
+  async readEventlogByEid(eid)
+  {
+    return await this.db.readEventsByEid(eid)
+  }
+
+  async readEventlogByDomainAndEid(domain, eid)
+  {
+    return await this.db.readEventsByDomainAndEid(domain, eid)
   }
 
   async readEventlogState(domain, pid)
