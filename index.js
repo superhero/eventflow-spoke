@@ -377,6 +377,11 @@ export default class Spoke
     return await this.db.readEventsByDomainAndPid(domain, pid)
   }
 
+  async readEventlogByTimestamp(domain, pid, timestampMin, timestampMax)
+  {
+    return await this.db.readEventsByDomainAndPidBetweenTimestamps(domain, pid, timestampMin, timestampMax)
+  }
+
   async readEventlogFilteredByNames(domain, pid, names)
   {
     return await this.db.readEventsByDomainAndPidAndNames(domain, pid, names)
