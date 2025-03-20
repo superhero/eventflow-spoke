@@ -1,6 +1,6 @@
 {
   "name": "@superhero/eventflow-spoke",
-  "version": "4.0.4",
+  "version": "4.0.5",
   "description": "Eventflow spoke is the client component in the eventflow ecosystem.",
   "keywords": [
     "eventflow",

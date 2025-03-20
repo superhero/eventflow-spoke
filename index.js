@@ -284,27 +284,56 @@ export default class Spoke
 
     return new Promise(async (accept, reject) =>
     {
-      const waitTimeout = setTimeout(() =>
+      const timeoutId = setTimeout(() =>
       {
-        const error = new Error(`wait timed out (${timeout}) for ${domain} › ${pid} › ${eventNames.join(' | ')}`)
-        error.code  = 'E_EVENTFLOW_WAIT_TIMEOUT'
-        reject(error)
+        unsubscribe().catch(reject).then(() => 
+        {
+          const error = new Error(`wait timed out (${timeout}) for ${domain} › ${pid} › ${eventNames.join(' | ')}`)
+          error.code  = 'E_EVENTFLOW_WAIT_TIMEOUT'
+          reject(error)
+        })
       }, timeout)
 
-      const subscriber = (event) =>
-      {
-        if(event.pid === pid)
+      const
+        unsubscribe = async () => 
         {
-          Promise.allSettled(eventNames.map((name) => this.unsubscribe(domain, name, subscriber)))
-            .then(() => 
-            {
-              clearTimeout(waitTimeout)
-              accept(event)
-            })
-        }
-      }
+          const 
+            unsubscribers = eventNames.map((name) => this.unsubscribe(domain, name, subscriber)),
+            results       = await Promise.allSettled(unsubscribers),
+            rejections    = results.filter((result) => 'rejected' === result.status)
 
-      await Promise.allSettled(eventNames.map((name) => this.subscribe(domain, name, subscriber)))
+          if(rejections.length)
+          {
+            const error = new Error(`unsubscribe failed: ${domain} › ${pid} › ${eventNames.join(' | ')}`)
+            error.code  = 'E_EVENTFLOW_WAIT_UNSUBSCRIBE_FAILED'
+            error.cause = rejections.map((result) => result.reason)
+            throw error
+          }
+        },
+        subscriber = async (event) =>
+        {
+          if(event.pid === pid)
+          {
+            clearTimeout(timeoutId)
+            await unsubscribe().catch(reject)
+            accept(event)
+          }
+        }
+
+      const
+        subscribers = eventNames.map((name) => this.subscribe(domain, name, subscriber)),
+        results     = await Promise.allSettled(subscribers),
+        rejections  = results.filter((result) => 'rejected' === result.status)
+
+      if(rejections.length)
+      {
+        clearTimeout(timeoutId)
+        await unsubscribe().catch(reject)
+        const error = new Error(`subscribe failed: ${domain} › ${pid} › ${eventNames.join(' | ')}`)
+        error.code  = 'E_EVENTFLOW_WAIT_SUBSCRIBE_FAILED'
+        error.cause = rejections.map((result) => result.reason)
+        reject(error)
+      }
     })
   }
 
