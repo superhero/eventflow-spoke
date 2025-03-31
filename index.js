@@ -8,11 +8,14 @@ import CertificatesManager    from '@superhero/eventflow-certificates'
 import HubsManager            from '@superhero/eventflow-spoke/manager/hubs'
 import ListenersManager       from '@superhero/eventflow-spoke/manager/listeners'
 
+const sleep = (ms) => new Promise((accept) => setTimeout(accept, ms))
+
 export function locate(locator)
 {
   const
-    config = locator.config.find('eventflow/spoke'),
-    db     = locator.locate('@superhero/eventflow-db')
+    certifications  = locator.config.find('eventflow/certificates', {}),
+    config          = locator.config.find('eventflow/spoke', { certifications }),
+    db              = locator.locate('@superhero/eventflow-db')
 
   return new Spoke(config, db)
 }
@@ -75,7 +78,9 @@ export default class Spoke
 
     this.hubs.destroy()
     this.log.warn`destroyed`
-    // setTimeout(() => this.db.close(), 5000)
+
+    await sleep(1e3)
+    await this.db.close()
   }
 
   async #pollOnlineHubs()

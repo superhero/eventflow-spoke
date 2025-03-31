@@ -5,18 +5,20 @@ export default
 {
   bootstrap:
   {
-    '@superhero/eventflow-spoke'         : true,
-    '@superhero/eventflow-spoke/consume' : true
+    '@superhero/eventflow-spoke'          : true,
+    '@superhero/eventflow-spoke/consume'  : true
   },
   dependency:
   {
-    '@superhero/eventflow-db' : true
+    '@superhero/eventflow-certificates'   : true,
+    '@superhero/eventflow-db'             : true
   },
   locator:
   {
-    '@superhero/eventflow-spoke'         : true,
-    '@superhero/eventflow-spoke/consume' : true
+    '@superhero/eventflow-spoke'          : true,
+    '@superhero/eventflow-spoke/consume'  : true
   },
+  destroy: { '@superhero/eventflow-db' : false },
   eventflow:
   {
     spoke:
