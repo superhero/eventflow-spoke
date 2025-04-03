@@ -101,7 +101,7 @@ export default class Spoke
 
     if(this.hubs.size)
     {
-      this.log.info`polling for online hubs completed`
+      this.log.info`completed polling for online hubs`
     }
     else
     {
@@ -452,7 +452,7 @@ export default class Spoke
       state   = {},
       length  = eventlog.length
 
-    for(let i = size; i < length; i += size)
+    for(let i = size; i <= length; i += size)
     {
       const segment = merge(i - size, i)
       deepassign(state, segment)
