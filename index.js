@@ -50,10 +50,10 @@ export default class Spoke
       throw error
     }
 
-    this.#spokeID     = (new IdNameGenerator().generateId() + '.' + config.NAME).toUpperCase()
+    this.#spokeID     = (config.NAME + '.' + new IdNameGenerator().generateId()).toUpperCase()
     this.config       = config
     this.db           = db
-    this.log          = new Log({ label: `[EVENTFLOW:SPOKE:${config.NAME}]` })
+    this.log          = new Log({ label: `[EVENTFLOW:SPOKE:${this.#spokeID}]` })
     this.certificates = new CertificatesManager(config.NAME, this.#spokeID, config.certificates, db, this.log)
 
     this.channel.on('record', this.#onRecord.bind(this))
