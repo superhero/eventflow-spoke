@@ -53,7 +53,7 @@ export default class Spoke
     this.#spokeID     = (new IdNameGenerator().generateId() + '.' + config.NAME).toUpperCase()
     this.config       = config
     this.db           = db
-    this.log          = new Log({ label: `[${config.NAME}]` })
+    this.log          = new Log({ label: `[EVENTFLOW:SPOKE:${config.NAME}]` })
     this.certificates = new CertificatesManager(config.NAME, this.#spokeID, config.certificates, db, this.log)
 
     this.channel.on('record', this.#onRecord.bind(this))
