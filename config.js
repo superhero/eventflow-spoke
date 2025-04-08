@@ -6,7 +6,7 @@ export default
   bootstrap:
   {
     '@superhero/eventflow-spoke'          : true,
-    '@superhero/eventflow-spoke/consume'  : true
+    '@superhero/eventflow-spoke/consume'  : 'eventflow/spoke/consume',
   },
   dependency:
   {

@@ -2,8 +2,8 @@ import { setTimeout as wait } from 'node:timers/promises'
 import Channel                from '@superhero/tcp-record-channel'
 import IdNameGenerator        from '@superhero/id-name-generator'
 import Log                    from '@superhero/log'
-import deepmerge              from '@superhero/deep/merge'
 import deepassign             from '@superhero/deep/assign'
+import deepmerge              from '@superhero/deep/merge'
 import CertificatesManager    from '@superhero/eventflow-certificates'
 import HubsManager            from '@superhero/eventflow-spoke/manager/hubs'
 import ListenersManager       from '@superhero/eventflow-spoke/manager/listeners'
@@ -144,6 +144,16 @@ export default class Spoke
         hub.on('close', this.#onHubDisconnected .bind(this, hub))
         hub.on('error', this.#onHubError        .bind(this, hub))
         this.log.info`connected to hub ${hubID} › ${hubIP}:${hubPort}`
+
+        // subscribe to all events that are already expected to be subscribed to
+        const subscriptions = deepmerge(this.consumers.listeners, this.subscriptions.listeners)
+        for(const domain in subscriptions)
+        {
+          for(const name of subscriptions[domain])
+          {
+            this.channel.transmit(hub, [ 'subscribe', domain, name ])
+          }
+        }
       }
     }
     catch(error)

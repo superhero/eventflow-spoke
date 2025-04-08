@@ -28,6 +28,16 @@ export default class ListenersManager
 
   #map = new Map
 
+  get listeners()
+  {
+    const 
+      entries     = [...this.#map.entries()],
+      entriesMap  = entries.map(([domain, listener]) => [domain, listener.eventNames()]),
+      listeners   = Object.fromEntries(entriesMap)
+
+    return listeners
+  }
+
   constructor()
   {
     return new Proxy(this, 
