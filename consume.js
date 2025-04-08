@@ -45,9 +45,12 @@ export default class ConsumeService
     {
       const
         service   = this.#locator.locate(domain),
-        consumer  = this.#consumer.bind(this, service)
+        consumer  = this.#consumer.bind(this, service),
+        names     = Array.isArray(consumerMap[domain])
+                  ? consumerMap[domain]
+                  :[consumerMap[domain]]
 
-      for(const name of consumerMap[domain])
+      for(const name of names)
       {
         await this.#spoke.consume(domain, name, consumer)
       }

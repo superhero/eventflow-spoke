@@ -147,11 +147,15 @@ export default class Spoke
 
         // subscribe to all events that are already expected to be subscribed to
         const subscriptions = deepmerge(this.consumers.listeners, this.subscriptions.listeners)
+
+        this.log.info`subscriptions ${subscriptions}`
+
         for(const domain in subscriptions)
         {
           for(const name of subscriptions[domain])
           {
             this.channel.transmit(hub, [ 'subscribe', domain, name ])
+            this.log.info`${hubID} subscribes to: ${domain} › ${name}`
           }
         }
       }
