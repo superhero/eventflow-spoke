@@ -1,3 +1,5 @@
+import Log from '@superhero/log'
+
 export function locate(locator)
 {
   const
@@ -32,6 +34,7 @@ export default class ConsumeService
   #locator
   #spoke
   #lookupConsumerMap = new Map
+  log = new Log({ label: '[EVENTFLOW:SPOKE:CONSUME]' })
 
   constructor(locator, spoke)
   {
@@ -59,11 +62,11 @@ export default class ConsumeService
 
   async #consumer(service, event)
   {
-    const consumer = this.#lazyloadConsumerName(event.name)
+    const consumer = this.#lazyloadConsumer(service, event)
 
     try
     {
-      await service[consumer](event)
+      await consumer(event)
     }
     catch(reason)
     {
@@ -93,16 +96,20 @@ export default class ConsumeService
     }
   }
 
-  #lazyloadConsumerName(eventName)
+  #lazyloadConsumer(service, event)
   {
-    if(this.#lookupConsumerMap.has(eventName))
-    {
-      return this.#lookupConsumerMap.get(eventName)
-    }
+    const lookupKey = event.domain + '.' + event.name
 
-    const consumer = this.#composeConsumerName(eventName)
-    this.#lookupConsumerMap.set(eventName, consumer)
-    return consumer
+    if(false === this.#lookupConsumerMap.has(lookupKey))
+    {
+      const consumerName = this.#composeConsumerName(event.name)
+      this.#lookupConsumerMap.set(lookupKey, 
+        consumerName in service
+        ? service[consumerName].bind(service)
+        : this.#fallbackConsumerCallback.bind(this, service, consumerName))
+    }
+    
+    return this.#lookupConsumerMap.get(lookupKey)
   }
 
   #composeConsumerName(eventName)
@@ -115,5 +122,10 @@ export default class ConsumeService
       observerName       = 'on' + observerCamelcase.join('')
 
     return observerName
+  }
+
+  #fallbackConsumerCallback(service, consumerName, event)
+  {
+    this.log.warn`consumer missing ${event.domain} › ${event.name} not found in service ${service.constructor.name} › ${consumerName}`
   }
 }
