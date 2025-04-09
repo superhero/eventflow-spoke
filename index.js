@@ -213,7 +213,6 @@ export default class Spoke
 
   async #onHubPublishMessage(_, domain, id, name, pid)
   {
-    this.log.info`onHubPublishMessage ${domain} › ${id} › ${name} › ${pid}`
     this.subscriptions[domain].emit(name, { domain, id, name, pid })
     await this.db.updateEventPublishedToConsumedBySpoke(id, this.#spokeID)
     && this.consumers[domain].emit(name, { domain, id, name, pid })
