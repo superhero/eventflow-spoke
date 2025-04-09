@@ -40,11 +40,12 @@ export default class ListenersManager
 
   constructor()
   {
-    return new Proxy(this, 
+    const self = this
+    return new Proxy(self, 
     {
       set: (_, domain, listener) =>
       {
-        if(this.#map.has(domain))
+        if(self.#map.has(domain))
         {
           const error = new Error(`cannot overwrite an existing domain listener: ${domain}`)
           error.code  = 'E_EVENTFLOW_LISTENERS_DOMAIN_ALREADY_EXISTS'
@@ -53,7 +54,7 @@ export default class ListenersManager
 
         if(listener instanceof Listener)
         {
-          this.#map.set(domain, listener)
+          self.#map.set(domain, listener)
           return true
         }
         else
@@ -63,12 +64,14 @@ export default class ListenersManager
           throw error
         }
       },
-      deleteProperty  : (_, domain) => this.#map.delete(domain),
-      has             : (_, domain) => this.#map.has(domain),
-      get             : (target, domain) => this.#map.get(domain) 
-                                         ?? domain in target 
-                                          ? target[domain]
-                                          : target.lazyload(domain)
+      deleteProperty  : (_, domain) => self.#map.delete(domain),
+      has             : (_, domain) => self.#map.has(domain),
+      get             : (target, domain) => 'symbol' === typeof domain 
+                                          ? Reflect.get(target, domain)
+                                          : self.#map.get(domain)
+                                            ?? ( domain in target
+                                               ? target[domain]
+                                               : target.lazyload(domain))
     })
   }
 
