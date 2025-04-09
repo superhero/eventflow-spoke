@@ -332,7 +332,7 @@ export default class Spoke
           {
             clearTimeout(timeoutId)
             await unsubscribe().catch(reject)
-            accept(event)
+            accept(event.name)
           }
         }
 
