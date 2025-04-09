@@ -63,9 +63,12 @@ export default class ListenersManager
           throw error
         }
       },
-      get             : (target, domain) => this.#map.get(domain) ?? target.lazyload(domain),
+      deleteProperty  : (_, domain) => this.#map.delete(domain),
       has             : (_, domain) => this.#map.has(domain),
-      deleteProperty  : (_, domain) => this.#map.delete(domain)
+      get             : (target, domain) => this.#map.get(domain) 
+                                         ?? domain in target 
+                                          ? target[domain]
+                                          : target.lazyload(domain)
     })
   }
 
