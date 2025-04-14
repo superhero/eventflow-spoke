@@ -262,6 +262,26 @@ export default class Spoke
     this.log.info`consuming: ${domain} › ${name}`
   }
 
+  removeConsumer(domain, name, callback)
+  {
+    this.consumers[domain].off(name, callback)
+
+    // If there are no listeners for the domain and name
+    // then broadcast an unsubscribe message.
+    if(0 === this.subscriptions[domain].listenerCount(name)
+    && 0 === this.consumers    [domain].listenerCount(name))
+    {
+      this.#broadcast('unsubscribe', domain, name)
+    }
+
+    // If there are no consumers attached to the domain 
+    // by any name, then delete the domain.
+    if(0 === this.consumers[domain].listenerCount())
+    {
+      delete this.consumers[domain]
+    }
+  }
+
   subscribe(domain, name, callback)
   {
     this.subscriptions[domain].on(name, callback)
@@ -279,8 +299,13 @@ export default class Spoke
     && 0 === this.consumers    [domain].listenerCount(name))
     {
       this.#broadcast('unsubscribe', domain, name)
+    }
+
+    // If there are no subscriptions attached to the domain 
+    // by any name, then delete the domain.
+    if(0 === this.subscriptions[domain].listenerCount())
+    {
       delete this.subscriptions[domain]
-      delete this.consumers    [domain]
     }
   }
 
