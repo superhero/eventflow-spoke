@@ -16,8 +16,8 @@
   },
   "dependencies": {
     "@superhero/deep": "^4.3.0",
-    "@superhero/eventflow-certificates": "^4.4.6",
-    "@superhero/eventflow-db": "^4.4.0",
+    "@superhero/eventflow-certificates": "^4.4.7",
+    "@superhero/eventflow-db": "^4.4.1",
     "@superhero/id-name-generator": "^4.0.0",
     "@superhero/log": "^4.0.2",
     "@superhero/tcp-record-channel": "^4.2.2"
