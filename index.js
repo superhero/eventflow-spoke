@@ -8,7 +8,7 @@ import CertificatesManager    from '@superhero/eventflow-certificates'
 import HubsManager            from '@superhero/eventflow-spoke/manager/hubs'
 import ListenersManager       from '@superhero/eventflow-spoke/manager/listeners'
 
-const sleep = (ms) => new Promise((accept) => setTimeout(accept, ms))
+const sleep = ms => new Promise(accept => setTimeout(accept, ms))
 
 export function locate(locator)
 {

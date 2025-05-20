@@ -15,10 +15,21 @@ export default
   },
   locator:
   {
-    '@superhero/eventflow-spoke'          : true,
-    '@superhero/eventflow-spoke/consume'  : true
+    '@superhero/eventflow-spoke/consume': 
+    {
+      uses:
+      [
+        '@superhero/eventflow-spoke/consume'
+      ]
+    },
+    '@superhero/eventflow-spoke': 
+    {
+      uses:
+      [
+        '@superhero/eventflow-db'
+      ]
+    }
   },
-  destroy: { '@superhero/eventflow-db' : false },
   eventflow:
   {
     spoke:
