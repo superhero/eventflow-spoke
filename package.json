@@ -1,6 +1,6 @@
 {
   "name": "@superhero/eventflow-spoke",
-  "version": "4.5.9",
+  "version": "4.5.10",
   "description": "Eventflow spoke is the client component in the eventflow ecosystem.",
   "keywords": [
     "eventflow",
@@ -15,16 +15,16 @@
     "./manager/*": "./manager/*.js"
   },
   "dependencies": {
-    "@superhero/deep": "^4.3.0",
-    "@superhero/eventflow-certificates": "^4.4.9",
-    "@superhero/eventflow-db": "^4.4.3",
+    "@superhero/deep": "^4.5.0",
+    "@superhero/eventflow-certificates": "^4.4.10",
+    "@superhero/eventflow-db": "^4.4.4",
     "@superhero/id-name-generator": "^4.0.0",
     "@superhero/log": "^4.0.2",
     "@superhero/tcp-record-channel": "^4.2.2"
   },
   "devDependencies": {
-    "@superhero/locator": "^4.4.1",
-    "@superhero/eventflow-hub": "^4.4.8"
+    "@superhero/locator": "^4.4.3",
+    "@superhero/eventflow-hub": "^4.4.10"
   },
   "scripts": {
     "test-build": "npm explore @superhero/eventflow-db -- npm run test-build",
