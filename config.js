@@ -19,7 +19,7 @@ export default
     {
       uses:
       [
-        '@superhero/eventflow-spoke/consume'
+        '@superhero/eventflow-spoke'
       ]
     },
     '@superhero/eventflow-spoke': 
