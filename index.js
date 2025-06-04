@@ -236,8 +236,8 @@ export default class Spoke
     {
       const error = new Error(`spoke callback failed to consume event ${event.domain} › ${event.name} › ${event.pid} › ${event.id}`)
       error.code  = 'E_EVENTFLOW_SPOKE_CONSUME_OBSERVER_ERROR'
-      error.cause = reason
       error.event = event
+      error.cause = reason
 
       await this.db.updateEventPublishedToFailed(event.id)
       const message = `failed to consume event ${event.domain} › ${event.name} › ${event.pid} › ${event.id}`

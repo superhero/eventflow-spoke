@@ -72,8 +72,8 @@ export default class ConsumeService
     {
       const error = new Error('consumer failed to handle event')
       error.code  = 'E_EVENTFLOW_SPOKE_CONSUMER_FAILED'
-      error.cause = reason
       error.event = { ...event }
+      error.cause = reason
       delete error.event.data
 
       if('function' === typeof service.onError)
