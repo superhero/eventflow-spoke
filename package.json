@@ -1,6 +1,6 @@
 {
   "name": "@superhero/eventflow-spoke",
-  "version": "4.5.15",
+  "version": "4.7.0",
   "description": "Eventflow spoke is the client component in the eventflow ecosystem.",
   "keywords": [
     "eventflow",
@@ -14,22 +14,25 @@
     "./consume": "./consume.js",
     "./manager/*": "./manager/*.js"
   },
+  "scripts": {
+    "syntax-check": "syntax-check",
+    "test-build": "npm explore @superhero/eventflow-db -- npm run test-build",
+    "test-only": "syntax-check; node --test-only --trace-warnings --test --test-reporter=@superhero/audit/reporter --experimental-test-coverage",
+    "test": "syntax-check; node --test --test-reporter=@superhero/audit/reporter --experimental-test-coverage"
+  },
   "dependencies": {
-    "@superhero/deep": "^4.5.0",
-    "@superhero/eventflow-certificates": "^4.5.0",
-    "@superhero/eventflow-db": "^4.5.0",
-    "@superhero/id-name-generator": "^4.0.0",
-    "@superhero/log": "^4.1.10",
-    "@superhero/tcp-record-channel": "^4.2.2"
+    "@superhero/deep": "4.7.0",
+    "@superhero/eventflow-certificates": "4.7.0",
+    "@superhero/eventflow-db": "4.7.0",
+    "@superhero/id-name-generator": "4.7.0",
+    "@superhero/log": "4.7.0",
+    "@superhero/tcp-record-channel": "4.7.0"
   },
   "devDependencies": {
-    "@superhero/locator": "^4.4.5",
-    "@superhero/eventflow-hub": "^4.5.0"
-  },
-  "scripts": {
-    "test-build": "npm explore @superhero/eventflow-db -- npm run test-build",
-    "test-only": "node --test-only --trace-warnings --test --experimental-test-coverage",
-    "test": "node --test --experimental-test-coverage"
+    "@superhero/audit": "4.7.0",
+    "@superhero/syntax-check": "0.0.2",
+    "@superhero/locator": "4.7.0",
+    "@superhero/eventflow-hub": "4.7.0"
   },
   "author": {
     "name": "Erik Landvall",
@@ -37,6 +40,6 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/superhero/eventflow-spoke.git"
+    "url": "https://github.com/superhero/eventflow-spoke.git"
   }
 }
