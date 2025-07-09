@@ -1,6 +1,6 @@
 {
   "name": "@superhero/eventflow-spoke",
-  "version": "4.7.5",
+  "version": "4.7.6",
   "description": "Eventflow spoke is the client component in the eventflow ecosystem.",
   "keywords": [
     "eventflow",
@@ -21,18 +21,18 @@
     "test": "syntax-check; node --test --test-reporter=@superhero/audit/reporter --experimental-test-coverage"
   },
   "dependencies": {
-    "@superhero/deep": "4.7.5",
-    "@superhero/eventflow-certificates": "4.7.5",
-    "@superhero/eventflow-db": "4.7.5",
-    "@superhero/id-name-generator": "4.7.5",
-    "@superhero/log": "4.7.5",
-    "@superhero/tcp-record-channel": "4.7.5"
+    "@superhero/deep": "4.7.6",
+    "@superhero/eventflow-certificates": "4.7.6",
+    "@superhero/eventflow-db": "4.7.6",
+    "@superhero/id-name-generator": "4.7.6",
+    "@superhero/log": "4.7.6",
+    "@superhero/tcp-record-channel": "4.7.6"
   },
   "devDependencies": {
-    "@superhero/audit": "4.7.5",
+    "@superhero/audit": "4.7.6",
     "@superhero/syntax-check": "0.0.2",
-    "@superhero/locator": "4.7.5",
-    "@superhero/eventflow-hub": "4.7.5"
+    "@superhero/locator": "4.7.6",
+    "@superhero/eventflow-hub": "4.7.6"
   },
   "author": {
     "name": "Erik Landvall",
