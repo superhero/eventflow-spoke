@@ -7,8 +7,17 @@ export default class HubsManager
   #socketMap = new Map
   #ipPortMap = new Map
 
-  destroy()
+  async destroy()
   {
+    for(const socket of this.all)
+    {
+      await new Promise(resolve =>
+      {
+        socket.once('close', resolve)
+        socket.end()
+      })
+    }
+
     this.#socketMap.clear()
     this.#ipPortMap.clear()
   }

@@ -8,8 +8,6 @@ import CertificatesManager    from '@superhero/eventflow-certificates'
 import HubsManager            from '@superhero/eventflow-spoke/manager/hubs'
 import ListenersManager       from '@superhero/eventflow-spoke/manager/listeners'
 
-const sleep = ms => new Promise(accept => setTimeout(accept, ms))
-
 export function locate(locator)
 {
   const
@@ -70,17 +68,8 @@ export default class Spoke
     reason.code  = 'E_EVENTFLOW_HUB_DESTROYED'
 
     this.abortion.abort(reason)
-
-    for(const socket of this.hubs.all)
-    {
-      socket.end()
-    }
-
-    this.hubs.destroy()
+    await this.hubs.destroy()
     this.log.warn`destroyed`
-
-    await sleep(1e3)
-    await this.db.close()
   }
 
   async #pollOnlineHubs()
