@@ -1,4 +1,10 @@
 ---
+#### v4.7.11
+---
+
+Bugfix graceful shutdown.
+
+---
 #### v4.7.10
 ---
 
