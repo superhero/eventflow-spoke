@@ -1,4 +1,10 @@
 ---
+#### v4.7.17
+---
+
+expose readDistinctPidByDomain function to read a list of all domain pids
+
+---
 #### v4.7.16
 ---
 
