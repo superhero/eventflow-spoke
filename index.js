@@ -470,6 +470,11 @@ export default class Spoke
     return state
   }
 
+  async readDistinctPidByDomain(domain)
+  {
+    return await this.db.readDistinctPidByDomain(domain)
+  }
+
   composeEventlogState(eventlog, size=10)
   {
     const
