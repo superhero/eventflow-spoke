@@ -1,29 +1,36 @@
 import assert  from 'node:assert/strict'
 import util    from 'node:util'
-import Locator from '@superhero/locator'
+import Core    from '@superhero/core'
 import { suite, test, before, after } from 'node:test'
 
 util.inspect.defaultOptions.depth = 5
 
 suite('@superhero/eventflow-spoke', () =>
 {
-  let locator, spoke, hub
+  let core, spoke, hub
 
   before(async () =>
   {
-    locator = new Locator()
+    if(core)
+    {
+      await core.destroy()
+    }
 
-    await locator.config.add('@superhero/eventflow-db')
-    await locator.config.add('@superhero/eventflow-hub')
-    await locator.config.add('./config.js')
-    locator.config.assign({ eventflow: { spoke: { certificates: { CERT_PASS_ENCRYPTION_KEY: 'encryptionKey123' }}}})
-    locator.config.assign({ eventflow: { hub:   { certificates: { CERT_PASS_ENCRYPTION_KEY: 'encryptionKey123' }}}})
+    core = new Core()
 
-    await locator.eagerload('@superhero/eventflow-db')
-    await locator.eagerload(locator.config.find('locator'))
+    await core.add('@superhero/eventflow-db')
+    await core.add('@superhero/eventflow-hub')
+    await core.add('./config.js')
 
-    spoke = locator('@superhero/eventflow-spoke')
-    hub   = locator('@superhero/eventflow-hub')
+    core.config.assign({ eventflow: { spoke: { certificates: { CERT_PASS_ENCRYPTION_KEY: 'encryptionKey123' }}}})
+    core.config.assign({ eventflow: { hub:   { certificates: { CERT_PASS_ENCRYPTION_KEY: 'encryptionKey123' }}}})
+    
+    // await core.bootstrap()
+
+    await core.locate.eagerload(core.config.find('locator'))
+
+    spoke = core.locate('@superhero/eventflow-spoke')
+    hub   = core.locate('@superhero/eventflow-hub')
 
     await hub.bootstrap()
     await spoke.bootstrap()
@@ -31,8 +38,7 @@ suite('@superhero/eventflow-spoke', () =>
 
   after(async () =>
   {
-    await locator.destroy()
-    locator.clear()
+    await core.destroy()
   })
 
   suite('Lifecycle', () => 
@@ -72,7 +78,7 @@ suite('@superhero/eventflow-spoke', () =>
       await spoke.publish(event)
       const waitPromise = await spoke.wait('domain1', 'pid1', 'success', 1e3)
       const result = await waitPromise
-      assert.strictEqual(result.name, 'success')
+      assert.strictEqual(result, 'success')
     })
 
     test('Schedule events', async () =>

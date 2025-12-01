@@ -11,6 +11,7 @@
   "type": "module",
   "exports": {
     ".": "./index.js",
+    "./config": "./config.js",
     "./consume": "./consume.js",
     "./manager/*": "./manager/*.js"
   },
@@ -31,7 +32,7 @@
   "devDependencies": {
     "@superhero/audit": "4.7.17",
     "@superhero/syntax-check": "0.0.2",
-    "@superhero/locator": "4.7.17",
+    "@superhero/core": "4.7.17",
     "@superhero/eventflow-hub": "4.7.17"
   },
   "author": {
