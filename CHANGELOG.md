@@ -1,4 +1,10 @@
 ---
+#### v4.7.18
+---
+
+exporting the default config and bugfixed the test suite
+
+---
 #### v4.7.17
 ---
 
