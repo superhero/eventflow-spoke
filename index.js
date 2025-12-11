@@ -48,7 +48,7 @@ export default class Spoke
       throw error
     }
 
-    this.#spokeID     = (new IdNameGenerator().generateId() + '.' + config.NAME).toUpperCase()
+    this.#spokeID     = (this.idNameGenerator.generateId() + '.' + config.NAME).toUpperCase()
     this.config       = config
     this.db           = db
     this.log          = new Log(Object.assign({ label: `[EVENTFLOW:SPOKE:${this.#spokeID}]` }, config.log))
