@@ -372,16 +372,16 @@ export default class Spoke
     return this.idNameGenerator.generateId()
   }
 
-  async publish(event)
+  async publish(event, serialize = this.config.SERDE)
   {
-    const eventID = await this.persist(event)
+    const eventID = await this.persist(event, serialize)
     await this.db.persistEventPublished({ event_id:eventID, publisher:this.#spokeID })
     this.#broadcast('publish', event.domain, eventID, event.name, event.pid)
     this.log.info`published event ${eventID} › ${event.domain} › ${event.name} › ${event.pid}`
     return eventID
   }
 
-  async schedule(scheduled, event)
+  async schedule(scheduled, event, serialize = this.config.SERDE)
   {
     const scheduledDate = new Date(scheduled)
 
@@ -395,15 +395,15 @@ export default class Spoke
 
     scheduled = scheduledDate.toJSON().replace('T', ' ').substring(0, 19)
 
-    const eventID = await this.persist(event)
+    const eventID = await this.persist(event, serialize)
     await this.db.persistEventPublished({ event_id:eventID, publisher:this.#spokeID })
     await this.db.persistEventScheduled({ event_id:eventID, scheduled })
     this.log.info`scheduled event ${eventID} › ${event.domain} › ${event.name} › ${scheduled}`
   }
 
-  async persist(event)
+  async persist(event, serialize = this.config.SERDE)
   {
-    return await this.db.persistEvent(event)
+    return await this.db.persistEvent(event, serialize)
   }
 
   async persistEntityAssociation(event_id, eid)
@@ -426,39 +426,39 @@ export default class Spoke
     return await this.db.deleteEventByDomainAndPid(domain, pid)
   }
 
-  async read(eventID)
+  async read(eventID, deserialize = this.config.SERDE)
   {
-    return await this.db.readEvent(eventID)
+    return await this.db.readEvent(eventID, deserialize)
   }
 
-  async readEventlog(domain, pid)
+  async readEventlog(domain, pid, deserialize = this.config.SERDE)
   {
-    return await this.db.readEventsByDomainAndPid(domain, pid)
+    return await this.db.readEventsByDomainAndPid(domain, pid, deserialize)
   }
 
-  async readEventlogByTimestamp(domain, pid, timestampMin, timestampMax)
+  async readEventlogByTimestamp(domain, pid, timestampMin, timestampMax, deserialize = this.config.SERDE)
   {
-    return await this.db.readEventsByDomainAndPidBetweenTimestamps(domain, pid, timestampMin, timestampMax)
+    return await this.db.readEventsByDomainAndPidBetweenTimestamps(domain, pid, timestampMin, timestampMax, deserialize)
   }
 
-  async readEventlogFilteredByNames(domain, pid, names)
+  async readEventlogFilteredByNames(domain, pid, names, deserialize = this.config.SERDE)
   {
-    return await this.db.readEventsByDomainAndPidAndNames(domain, pid, names)
+    return await this.db.readEventsByDomainAndPidAndNames(domain, pid, names, deserialize)
   }
 
-  async readEventlogByChildProcess(domain, cpid)
+  async readEventlogByChildProcess(domain, cpid, deserialize = this.config.SERDE)
   {
-    return await this.db.readEventsByDomainAndCpid(domain, cpid)
+    return await this.db.readEventsByDomainAndCpid(domain, cpid, deserialize)
   }
 
-  async readEventlogByEid(eid)
+  async readEventlogByEid(eid, deserialize = this.config.SERDE)
   {
-    return await this.db.readEventsByEid(eid)
+    return await this.db.readEventsByEid(eid, deserialize)
   }
 
-  async readEventlogByDomainAndEid(domain, eid)
+  async readEventlogByDomainAndEid(domain, eid, deserialize = this.config.SERDE)
   {
-    return await this.db.readEventsByDomainAndEid(domain, eid)
+    return await this.db.readEventsByDomainAndEid(domain, eid, deserialize)
   }
 
   async readEventlogState(domain, pid)
