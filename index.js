@@ -119,12 +119,10 @@ export default class Spoke
         this.log.info`connecting to hub ${hubID} › ${hubIP}:${hubPort}`
 
         const
-          rootCA          = await this.certificates.root,
-          spokeICA        = await this.certificates.intermediate,
-          spokeLeaf       = await this.certificates.leaf,
-          ca              = rootCA.cert,
-          certChain       = spokeLeaf.cert + spokeICA.cert,
-          dynamicConfig   = { servername:hubID, host:hubIP, port:hubPort, ca, cert:certChain, key:spokeLeaf.key, passphrase:spokeLeaf.pass },
+          chain           = await this.certificates.getChain(),
+          ca              = chain.root.cert,
+          cert            = chain.leaf.cert + chain.intermediate.cert,
+          dynamicConfig   = { servername:hubID, host:hubIP, port:hubPort, ca, cert, key:chain.leaf.key, passphrase:chain.leaf.pass },
           peerHubConfig   = deepmerge(dynamicConfig, this.config.TCP_SOCKET_CLIENT_OPTIONS),
           hub             = await this.channel.createTlsClient(peerHubConfig)
 
