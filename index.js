@@ -157,8 +157,20 @@ export default class Spoke
         }
         default:
         {
-          const message = `failed to connect to hub ${hubID} › ${hubIP}:${hubPort} [${error.code}] ${error.message}`
-          this.log.fail`failed to connect to hub ${hubID} › ${hubIP}:${hubPort} [${error.code}] ${error.message}`
+          let chain = ''
+          for(let cause = error; cause; cause = cause.cause)
+          {
+            if(cause instanceof Error)
+            {
+              chain += ` › [${cause.code}] ${cause.message}`
+            }
+            else if('string' === typeof cause)
+            {
+              chain += ` › ${cause}`
+            }
+          }
+          this.log.fail`failed to connect to hub ${hubID} › ${hubIP}:${hubPort}${chain}`
+          const message = `failed to connect to hub ${hubID} › ${hubIP}:${hubPort}`
           await this.db.persistLog({ agent:this.#spokeID, message, error })
         }
       }
