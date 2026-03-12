@@ -34,9 +34,10 @@ export default
   {
     spoke:
     {
-      NAME                      : process.env.EVENTFLOW_SPOKE_NAME ?? 'EVENTFLOW-SPOKE',
-      TCP_SOCKET_CLIENT_OPTIONS : process.env.EVENTFLOW_SPOKE_TCP_SOCKET_CLIENT_OPTIONS,
-      SERDE                     : process.env.EVENTFLOW_SPOKE_SERDE,
+      NAME                        : process.env.EVENTFLOW_SPOKE_NAME ?? 'EVENTFLOW-SPOKE',
+      TCP_SOCKET_CLIENT_OPTIONS   : process.env.EVENTFLOW_SPOKE_TCP_SOCKET_CLIENT_OPTIONS,
+      TCP_RECORD_CHANNEL_TIMEOUT  : process.env.EVENTFLOW_SPOKE_TCP_RECORD_CHANNEL_TIMEOUT ?? '10000',
+      SERDE                       : process.env.EVENTFLOW_SPOKE_SERDE,
       consume:
       {
         // '<event_domain>' : '*',

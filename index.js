@@ -112,7 +112,7 @@ export default class Spoke
       {
         const error = new Error('already connected to hub')
         error.code  = 'E_EVENTFLOW_SPOKE_ALREADY_CONNECTED_TO_HUB'
-        reject(error)
+        throw error
       }
       else
       {
@@ -124,7 +124,8 @@ export default class Spoke
           cert            = chain.leaf.cert + chain.intermediate.cert,
           dynamicConfig   = { servername:hubID, host:hubIP, port:hubPort, ca, cert, key:chain.leaf.key, passphrase:chain.leaf.pass },
           peerHubConfig   = deepmerge(dynamicConfig, this.config.TCP_SOCKET_CLIENT_OPTIONS),
-          hub             = await this.channel.createTlsClient(peerHubConfig)
+          timeout         = Number(this.config.TCP_RECORD_CHANNEL_TIMEOUT || 10e3),
+          hub             = await this.channel.createTlsClient(peerHubConfig, socket => socket.setTimeout(timeout))
 
         hub.id = hubID
         this.hubs.add(hubIP, hubPort, hub)
