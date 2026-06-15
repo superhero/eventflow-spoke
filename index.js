@@ -41,7 +41,7 @@ export default class Spoke
   {
     if('string' !== typeof config.NAME
     || 0 === config.NAME.length
-    || (/[^a-z0-9\-\.]/i).test(config.NAME))
+    || (/[^a-z0-9_\-\.]/i).test(config.NAME))
     {
       const error = new Error(`invalid config.NAME (${config.NAME})`)
       error.code  = 'E_EVENTFLOW_HUB_INVALID_CONFIG_NAME'
@@ -274,7 +274,7 @@ export default class Spoke
       this.#broadcast('unsubscribe', domain, name)
     }
 
-    // If there are no consumers attached to the domain 
+    // If there are no consumers attached to the domain
     // by any name, then delete the domain.
     if(0 === this.consumers[domain].listenerCount())
     {
@@ -301,7 +301,7 @@ export default class Spoke
       this.#broadcast('unsubscribe', domain, name)
     }
 
-    // If there are no subscriptions attached to the domain 
+    // If there are no subscriptions attached to the domain
     // by any name, then delete the domain.
     if(0 === this.subscriptions[domain].listenerCount())
     {
@@ -327,7 +327,7 @@ export default class Spoke
     {
       const timeoutId = setTimeout(() =>
       {
-        unsubscribe().catch(reject).then(() => 
+        unsubscribe().catch(reject).then(() =>
         {
           const error = new Error(`wait timed out (${timeout}) for ${domain} › ${pid} › ${eventNames.join(' | ')}`)
           error.code  = 'E_EVENTFLOW_WAIT_TIMEOUT'
@@ -336,9 +336,9 @@ export default class Spoke
       }, timeout)
 
       const
-        unsubscribe = async () => 
+        unsubscribe = async () =>
         {
-          const 
+          const
             unsubscribers = eventNames.map((name) => this.unsubscribe(domain, name, subscriber)),
             results       = await Promise.allSettled(unsubscribers),
             rejections    = results.filter((result) => 'rejected' === result.status)

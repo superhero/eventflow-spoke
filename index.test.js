@@ -1,6 +1,7 @@
 import assert  from 'node:assert/strict'
 import util    from 'node:util'
 import Core    from '@superhero/core'
+import Spoke   from '@superhero/eventflow-spoke'
 import { suite, test, before, after } from 'node:test'
 
 util.inspect.defaultOptions.depth = 5
@@ -51,6 +52,18 @@ suite('@superhero/eventflow-spoke', () =>
       assert.ok(spoke.hubs)
       assert.ok(spoke.subscriptions)
       assert.ok(spoke.consumers)
+    })
+
+    test('Can initialize with underscore in config name', () =>
+    {
+      const spoke = new Spoke(
+      {
+        NAME          : 'EVENTFLOW_SPOKE',
+        certificates  : { CERT_PASS_ENCRYPTION_KEY:'encryptionKey123' }
+      }, {})
+
+      assert.strictEqual(spoke.config.NAME, 'EVENTFLOW_SPOKE')
+      assert.match(spoke.spokeID, /\.EVENTFLOW_SPOKE$/)
     })
   })
 
