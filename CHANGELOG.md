@@ -1,4 +1,10 @@
 ---
+#### v4.8.8
+---
+
+Updated the Eventflow database, certificate, and hub dependencies to v4.8.8.
+
+---
 #### v4.8.6
 ---\n\nVersion alignment...
 
